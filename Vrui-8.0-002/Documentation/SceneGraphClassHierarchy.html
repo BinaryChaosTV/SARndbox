@@ -1,0 +1,292 @@
+<HTML>
+<HEAD>
+<TITLE>SceneGraph -- Simple Scene Graph Renderer Library</TITLE>
+</HEAD>
+
+<BODY>
+
+<H1> SceneGraph Library Class Hierarchy</H1>
+
+<H3>Node Classes</H3>
+
+<DL>
+	<DT><H4>Node</H4></DT>
+	<DD>Base class for all nodes. Derived from Threads::RefCounted, meaning that objects derived from Node should be referenced by objects of class Misc::Autopointer for thread-safe automatic garbage collection.
+	<DL>
+		<DT><H4>AttributeNode</H4></DT>
+		<DD>Base class for nodes that define the appearance of objects of class ShapeNode, i.e., of rendered geometry.
+		<DL>
+			<DT><H4>TextureNode</H4></DT>
+			<DD>Base class for nodes that define textures that can be mapped onto geometry.
+			<DL>
+				<DT><H4>ImageTextureNode</H4></DT>
+				<DD>Class for nodes defining a static texture image loaded from an image file.
+				</DD>
+			</DL>
+			</DD>
+			
+			<DT><H4>TextureTransformNode</H4></DT>
+			<DD>Class defining a 2D texture transformation that affects implicit or explicit texture coordinates associated with rendered geometry.
+			</DD>
+			
+			<DT><H4>MaterialNode</H4></DT>
+			<DD>Class defining material properties for rendered geometry compatible with OpenGL's standard lighting model.
+			</DD>
+			
+			<DT><H4>BaseAppearanceNode</H4></DT>
+			<DD>Base class for nodes that completely define the appearance of rendered geometry.
+			<DL>
+				<DT><H4>AppearanceNode</H4></DT>
+				<DD>Class for nodes combining an optional texture, an optional texture transformation, and an optional material definition.
+				</DD>
+			</DL>
+			</DD>
+		</DL>
+		</DD>
+		
+		<DT><H4>PointTransformNode</H4></DT>
+		<DD>Base class for nodes that apply potentially non-linear transformations to the vertices of rendered geometry.
+		<DL>
+			<DT><H4>AffinePointTransformNode</H4></DT>
+			<DD>
+			</DD>
+			
+			<DT><H4>GeodeticToCartesianPointTransformNode</H4></DT>
+			<DD>
+			</DD>
+			
+			<DT><H4>UTMPointTransformNode</H4></DT>
+			<DD>
+			</DD>
+		</DL>
+		</DD>
+		
+		<DT><H4>GeometryNode</H4></DT>
+		<DD>Base class for nodes that define renderable geometry.
+		<DL>
+			<DT><H4>PointSetNode</H4></DT>
+			<DD>
+			</DD>
+			
+			<DT><H4>LabelSetNode</H4></DT>
+			<DD>
+			</DD>
+			
+			<DT><H4>CurveSetNode</H4></DT>
+			<DD>
+			</DD>
+			
+			<DT><H4>IndexedLineSetNode</H4></DT>
+			<DD>
+			</DD>
+			
+			<DT><H4>BoxNode</H4></DT>
+			<DD>
+			</DD>
+			
+			<DT><H4>SphereNode</H4></DT>
+			<DD>
+			</DD>
+			
+			<DT><H4>CylinderNode</H4></DT>
+			<DD>
+			</DD>
+			
+			<DT><H4>ConeNode</H4></DT>
+			<DD>
+			</DD>
+			
+			<DT><H4>QuadSetNode</H4></DT>
+			<DD>
+			</DD>
+			
+			<DT><H4>ElevationGridNode</H4></DT>
+			<DD>
+			</DD>
+			
+			<DT><H4>IndexedFaceSetNode</H4></DT>
+			<DD>
+			</DD>
+			
+			<DT><H4>TextNode</H4></DT>
+			<DD>
+			</DD>
+			
+			<DT><H4>FancyTextNode</H4></DT>
+			<DD>
+			</DD>
+		</DL>
+		</DD>
+		
+		<DT><H4>GraphNode</H4></DT>
+		<DD>Base class for nodes that form the backbone of a scene graph, i.e., nodes that can act as the root of a scene graph, or occur as children of grouping nodes.
+		<DL>
+			<DT><H4>ShapeNode</H4></DT>
+			<DD>
+			</DD>
+			
+			<DT><H4>GroupNode</H4></DT>
+			<DD>Class for nodes containg lists of other nodes (derived from GraphNode) as children, forming the roots of sub-graphs.
+			<DL>
+				<DT><H4>TransformNode</H4></DT>
+				<DD>
+				</DD>
+				
+				<DT><H4>ONTransformNode</H4></DT>
+				<DD>
+				</DD>
+				
+				<DT><H4>OGTransformNode</H4></DT>
+				<DD>
+				</DD>
+				
+				<DT><H4>DOGTransformNode</H4></DT>
+				<DD>
+				</DD>
+				
+				<DT><H4>GeodeticToCartesianTransformNode</H4></DT>
+				<DD>
+				</DD>
+				
+				<DT><H4>BillboardNode</H4></DT>
+				<DD>
+				</DD>
+				
+				<DT><H4>CollisionNode</H4></DT>
+				<DD>
+				</DD>
+				
+				<DT><H4>InlineNode</H4></DT>
+				<DD>
+				</DD>
+				
+				<DT><H4>ArcInfoExportFileNode</H4></DT>
+				<DD>
+				</DD>
+				
+				<DT><H4>ESRIShapeFileNode</H4></DT>
+				<DD>
+				</DD>
+			</DL>
+			</DD>
+			
+			<DT><H4>LODNode</H4></DT>
+			<DD>
+			</DD>
+			
+			<DT><H4>SwitchNode</H4></DT>
+			<DD>
+			</DD>
+			
+			<DT><H4>MeshFileNode</H4></DT>
+			<DD>
+			</DD>
+			
+			<DT><H4>Doom3ModelNode</H4></DT>
+			<DD>
+			</DD>
+			
+			<DT><H4>Doom3MD5MeshNode</H4></DT>
+			<DD>
+			</DD>
+		</DL>
+		</DD>
+		
+		<DT><H4>TextureCoordinateNode</H4></DT>
+		<DD>
+		</DD>
+		
+		<DT><H4>ColorNode</H4></DT>
+		<DD>
+		</DD>
+		
+		<DT><H4>NormalNode</H4></DT>
+		<DD>
+		</DD>
+		
+		<DT><H4>CoordinateNode</H4></DT>
+		<DD>
+		</DD>
+		
+		<DT><H4>FontStyleNode</H4></DT>
+		<DD>
+		</DD>
+		
+		<DT><H4>FancyFontStyleNode</H4></DT>
+		<DD>
+		</DD>
+		
+		<DT><H4>ReferenceEllipsoidNode</H4></DT>
+		<DD>
+		</DD>
+		
+		<DT><H4>ImageProjectionNode</H4></DT>
+		<DD>
+		</DD>
+		
+		<DT><H4>ColorMapNode</H4></DT>
+		<DD>
+		</DD>
+		
+		<DT><H4>MaterialLibraryNode</H4></DT>
+		<DD>
+		</DD>
+		
+		<DT><H4>Doom3DataContextNode</H4></DT>
+		<DD>
+		</DD>
+	</DL>
+	</DD>
+</DL>
+
+<H3>Support Classes</H3>
+<DL>
+	<DT><H4>DisplayList</H4></DT>
+	<DD>Base class for objects that use OpenGL display lists to render their geometry.
+	</DD>
+</DL>
+
+<H3>Scene Graph Creation Classes</H3>
+
+<DL>
+	<DT><H4>NodeFactory</H4></DT>
+	<DD>Base class for objects creating node objects.
+	<DL>
+		<DT><H4>GenericNodeFactory&lt;NodeType&gt;</H4></DT>
+		<DD>Templatized class for objects creating node objects of the template parameter class.
+		</DD>
+	</DL>
+	</DD>
+	
+	<DT><H4>NodeCreator</H4></DT>
+	<DD>Class for objects creating nodes of registered type by name of the requested node class.
+	</DD>
+	
+	<DT><H4>VRMLFile</H4></DT>
+	<DD>Class representing a VRML&nbsp;2.0 file while it is being parsed into a scene graph.
+	</DD>
+</DL>
+
+<H3>Scene Graph Processing Pass State Classes</H3>
+
+<DL>
+	<DT><H4>TraversalState</H4></DT>
+	<DD>Base class for state structures passed along when traversing a scene graph.
+	<DL>
+		<DT><H4>GLRenderState</H4></DT>
+		<DD>Class for objects encapsulating the current state of an OpenGL graphics rendering pass through a scene graph.
+		</DD>
+		
+		<DT><H4>ALRenderState</H4></DT>
+		<DD>Class for objects encapsulating the current state of an OpenAL audio rendering pass through a scene graph.
+		</DD>
+	</DL>
+	</DD>
+	
+	<DT><H4>SphereCollisionQuery</H4></DT>
+	<DD>Class for objects defining the motion of a sphere through space and the current state of a collision detection pass through a scene graph.
+	</DD>
+</DL>
+
+</BODY>
+</HTML>

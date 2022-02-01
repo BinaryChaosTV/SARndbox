@@ -1,0 +1,11 @@
+prefix=/usr/local
+exec_prefix=${prefix}
+libdir=/usr/local/lib/x86_64-linux-gnu/Vrui-8.0
+includedir=/usr/local/include/Vrui-8.0
+
+Name: Vrui
+Description: Vrui (Virtual Reality User Interface) development toolkit
+Requires: 
+Version: 8000002
+Libs: -L${libdir} -lMisc -lRealtime -lThreads -lUSB -lRawHID -lIO -lPlugins -lComm -lCluster -lMath -lGeometry -lGLWrappers -lGLSupport -lGLXSupport -lGLGeometry -lImages -lGLMotif -lSound -lVideo -lALSupport -lSceneGraph -lVrui -lVRDeviceDaemon -L/usr/lib/x86_64-linux-gnu -lfreetype -ltiff -lX11 -ldl -lrt -lopenal -lGL -lz -lpthread -lm -Wl,-rpath=${libdir}
+Cflags: -I${includedir} -I/usr/include -I/usr/include/freetype2 -I/usr/include/x86_64-linux-gnu 

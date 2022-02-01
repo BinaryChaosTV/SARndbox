@@ -1,0 +1,209 @@
+/***********************************************************************
+ObjectLoader - Light-weight class to load objects from dynamic shared
+object files (DSOs).
+Copyright (c) 2009-2019 Oliver Kreylos
+
+This file is part of the Plugin Handling Library (Plugins).
+
+The Plugin Handling Library is free software; you can redistribute it
+and/or modify it under the terms of the GNU General Public License as
+published by the Free Software Foundation; either version 2 of the
+License, or (at your option) any later version.
+
+The Plugin Handling Library is distributed in the hope that it will be
+useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+General Public License for more details.
+
+You should have received a copy of the GNU General Public License along
+with the Plugin Handling Library; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+***********************************************************************/
+
+#define PLUGINS_OBJECTLOADER_IMPLEMENTATION
+
+#include <Plugins/ObjectLoader.h>
+
+#include <stdio.h>
+#include <dlfcn.h>
+#include <stdexcept>
+#include <Misc/ThrowStdErr.h>
+
+#include <Plugins/FunctionPointerHack.h>
+
+namespace Plugins {
+
+/***************************************
+Methods of class ObjectLoader::DsoState:
+***************************************/
+
+template <class ManagedClassParam>
+inline
+ObjectLoader<ManagedClassParam>::DsoState::DsoState(void* sDsoHandle)
+	:dsoHandle(sDsoHandle)
+	{
+	/* Get address of object destruction function from DSO: */
+	destroyObjectFunction=DestroyObjectFunction(nowarninghack_dlsym(dsoHandle,"destroyObject"));
+	if(destroyObjectFunction==0)
+		throw DsoError(dlerror());
+	}
+
+/*****************************
+Methods of class ObjectLoader:
+*****************************/
+
+template <class ManagedClassParam>
+inline
+ObjectLoader<ManagedClassParam>::ObjectLoader(
+	const char* sDsoNameTemplate)
+	:ObjectLoaderBase(sDsoNameTemplate),
+	 dsoStates(17)
+	{
+	}
+
+template <class ManagedClassParam>
+inline
+ObjectLoader<ManagedClassParam>::~ObjectLoader(
+	void)
+	{
+	/* Destroy all objects and unload all DSOs: */
+	for(typename DsoStateHasher::Iterator dsIt=dsoStates.begin();!dsIt.isFinished();++dsIt)
+		{
+		/* Destroy the object: */
+		dsIt->getDest().destroyObjectFunction(dsIt->getSource());
+		
+		/* Close the DSO: */
+		if(dsIt->getDest().dsoHandle!=0)
+			dlclose(dsIt->getDest().dsoHandle);
+		}
+	}
+
+template <class ManagedClassParam>
+inline
+typename ObjectLoader<ManagedClassParam>::ManagedClass*
+ObjectLoader<ManagedClassParam>::createObject(
+	const char* className)
+	{
+	/* Load the DSO: */
+	DsoState dsoState(loadDso(className));
+	
+	/* Get address of object creation function from DSO: */
+	typedef ManagedClass* (*CreateObjectFunction)(ObjectLoader<ManagedClass>&);
+	CreateObjectFunction createObjectFunction=CreateObjectFunction(nowarninghack_dlsym(dsoState.dsoHandle,"createObject"));
+	if(createObjectFunction==0)
+		throw DsoError(dlerror());
+	
+	/* Create the object: */
+	ManagedClass* result=createObjectFunction(*this);
+	
+	/* Store the object's DSO state: */
+	dsoStates.setEntry(typename DsoStateHasher::Entry(result,dsoState));
+	
+	return result;
+	}
+
+template <class ManagedClassParam>
+inline
+typename ObjectLoader<ManagedClassParam>::ManagedClass*
+ObjectLoader<ManagedClassParam>::createObject(
+	const char* className,
+	unsigned int version)
+	{
+	/* Load the DSO: */
+	if(versionStart==dsoNameTemplate.end())
+		throw std::runtime_error("ObjectLoader::createObject: DSO name template does not accept version number");
+	DsoState dsoState(loadDso(className,version));
+	
+	/* Get address of object creation function from DSO: */
+	typedef ManagedClass* (*CreateObjectFunction)(ObjectLoader<ManagedClass>&);
+	CreateObjectFunction createObjectFunction=CreateObjectFunction(nowarninghack_dlsym(dsoState.dsoHandle,"createObject"));
+	if(createObjectFunction==0)
+		throw DsoError(dlerror());
+	
+	/* Create the object: */
+	ManagedClass* result=createObjectFunction(*this);
+	
+	/* Store the object's DSO state: */
+	dsoStates.setEntry(typename DsoStateHasher::Entry(result,dsoState));
+	
+	return result;
+	}
+
+template <class ManagedClassParam>
+template <class CreateObjectFunctionArgumentParam>
+inline
+typename ObjectLoader<ManagedClassParam>::ManagedClass*
+ObjectLoader<ManagedClassParam>::createObject(
+	const char* className,
+	CreateObjectFunctionArgumentParam argument)
+	{
+	/* Load the DSO: */
+	DsoState dsoState(loadDso(className));
+	
+	/* Get address of object creation function from DSO: */
+	typedef ManagedClass* (*CreateObjectFunction)(ObjectLoader<ManagedClass>&,CreateObjectFunctionArgumentParam);
+	CreateObjectFunction createObjectFunction=CreateObjectFunction(nowarninghack_dlsym(dsoState.dsoHandle,"createObject"));
+	if(createObjectFunction==0)
+		throw DsoError(dlerror());
+	
+	/* Create the object: */
+	ManagedClass* result=createObjectFunction(*this,argument);
+	
+	/* Store the object's DSO state: */
+	dsoStates.setEntry(typename DsoStateHasher::Entry(result,dsoState));
+	
+	return result;
+	}
+
+template <class ManagedClassParam>
+template <class CreateObjectFunctionArgumentParam>
+inline
+typename ObjectLoader<ManagedClassParam>::ManagedClass*
+ObjectLoader<ManagedClassParam>::createObject(
+	const char* className,
+	unsigned int version,
+	CreateObjectFunctionArgumentParam argument)
+	{
+	/* Load the DSO: */
+	if(versionStart==dsoNameTemplate.end())
+		throw std::runtime_error("ObjectLoader::createObject: DSO name template does not accept version number");
+	DsoState dsoState(loadDso(className,version));
+	
+	/* Get address of object creation function from DSO: */
+	typedef ManagedClass* (*CreateObjectFunction)(ObjectLoader<ManagedClass>&,CreateObjectFunctionArgumentParam);
+	CreateObjectFunction createObjectFunction=CreateObjectFunction(nowarninghack_dlsym(dsoState.dsoHandle,"createObject"));
+	if(createObjectFunction==0)
+		throw DsoError(dlerror());
+	
+	/* Create the object: */
+	ManagedClass* result=createObjectFunction(*this,argument);
+	
+	/* Store the object's DSO state: */
+	dsoStates.setEntry(typename DsoStateHasher::Entry(result,dsoState));
+	
+	return result;
+	}
+
+template <class ManagedClassParam>
+inline
+void
+ObjectLoader<ManagedClassParam>::destroyObject(
+	typename ObjectLoader<ManagedClassParam>::ManagedClass* object)
+	{
+	/* Find the object's DSO state: */
+	typename DsoStateHasher::Iterator dsIt=dsoStates.findEntry(object);
+	if(dsIt.isFinished())
+		Misc::throwStdErr("ObjectLoader::destroyObject: DSO state not found");
+	
+	/* Destroy the object: */
+	dsIt->getDest().destroyObjectFunction(object);
+	
+	/* Close the DSO: */
+	if(dsIt->getDest().dsoHandle!=0)
+		dlclose(dsIt->getDest().dsoHandle);
+	
+	/* Remove the object's DSO state: */
+	dsoStates.removeEntry(dsIt);
+	}
+
+}

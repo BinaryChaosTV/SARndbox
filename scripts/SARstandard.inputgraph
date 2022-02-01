@@ -1,0 +1,18 @@
+section InputGraph
+    #use key 5 to take a screen shot as the built in tools is not working
+    #section PrintScreenTool
+    #    toolClass ScriptExecutorTool
+    #    bindings ((Mouse, 5))
+    #    executablePathName ~/src/scripts/capture-screen.sh
+    #PrintScreenTool endsection
+    #endsection
+
+    #use key 6 to switch between weather options
+	section ChangeWeather
+			toolClass ScriptExecutorTool
+			bindings ((Mouse, 6))
+			executablePathName ~/src/scripts/weather.sh
+            arguments ()
+	#ChangeWeather endsection
+	endsection
+endsection

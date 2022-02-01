@@ -1,0 +1,29 @@
+$(OBJDIR)/SceneGraph/Node.o $(OBJDIR)/pic/SceneGraph/Node.o: SceneGraph/Node.cpp \
+ /home/sandbox/src/Vrui-8.0-002/SceneGraph/Node.h \
+ /home/sandbox/src/Vrui-8.0-002/Misc/Autopointer.h \
+ /home/sandbox/src/Vrui-8.0-002/Threads/RefCounted.h \
+ /home/sandbox/src/Vrui-8.0-002/Threads/Atomic.h \
+ /home/sandbox/src/Vrui-8.0-002/Threads/Config.h \
+ /home/sandbox/src/Vrui-8.0-002/Misc/StringPrintf.h \
+ /home/sandbox/src/Vrui-8.0-002/SceneGraph/VRMLFile.h \
+ /home/sandbox/src/Vrui-8.0-002/Misc/StringHashFunctions.h \
+ /home/sandbox/src/Vrui-8.0-002/Misc/HashTable.h \
+ /home/sandbox/src/Vrui-8.0-002/Misc/PoolAllocator.h \
+ /home/sandbox/src/Vrui-8.0-002/Misc/StandardHashFunction.h \
+ /home/sandbox/src/Vrui-8.0-002/IO/File.h \
+ /home/sandbox/src/Vrui-8.0-002/Misc/Endianness.h \
+ /home/sandbox/src/Vrui-8.0-002/IO/TokenSource.h \
+ /home/sandbox/src/Vrui-8.0-002/IO/Directory.h \
+ /home/sandbox/src/Vrui-8.0-002/Misc/FileTests.h \
+ /home/sandbox/src/Vrui-8.0-002/IO/SeekableFile.h \
+ /home/sandbox/src/Vrui-8.0-002/SceneGraph/FieldTypes.h \
+ /home/sandbox/src/Vrui-8.0-002/GL/GLColor.h \
+ /home/sandbox/src/Vrui-8.0-002/GL/GLScalarLimits.h \
+ /home/sandbox/src/Vrui-8.0-002/Math/Math.h \
+ /home/sandbox/src/Vrui-8.0-002/SceneGraph/Geometry.h \
+ /home/sandbox/src/Vrui-8.0-002/SceneGraph/GroupNode.h \
+ /home/sandbox/src/Vrui-8.0-002/Geometry/ComponentArray.h \
+ /home/sandbox/src/Vrui-8.0-002/Geometry/Point.h \
+ /home/sandbox/src/Vrui-8.0-002/Geometry/Vector.h \
+ /home/sandbox/src/Vrui-8.0-002/SceneGraph/GraphNode.h \
+ /home/sandbox/src/Vrui-8.0-002/Misc/SizedTypes.h

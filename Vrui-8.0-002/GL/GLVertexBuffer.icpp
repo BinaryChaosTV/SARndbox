@@ -1,0 +1,103 @@
+/***********************************************************************
+GLVertexBuffer - Class to represent OpenGL vertex buffer objects
+containg typed vertices.
+Copyright (c) 2018 Oliver Kreylos
+
+This file is part of the OpenGL Support Library (GLSupport).
+
+The OpenGL Support Library is free software; you can redistribute it
+and/or modify it under the terms of the GNU General Public License as
+published by the Free Software Foundation; either version 2 of the
+License, or (at your option) any later version.
+
+The OpenGL Support Library is distributed in the hope that it will be
+useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+General Public License for more details.
+
+You should have received a copy of the GNU General Public License along
+with the OpenGL Support Library; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+***********************************************************************/
+
+#define GLVERTEXBUFFER_IMPLEMENTATION
+
+#include <GL/GLVertexBuffer.h>
+
+#include <GL/GLVertexArrayParts.h>
+#include <GL/Extensions/GLARBVertexBufferObject.h>
+
+/*******************************
+Methods of class GLVertexBuffer:
+*******************************/
+
+template <class VertexParam>
+inline
+GLVertexBuffer<VertexParam>::GLVertexBuffer(
+	void)
+	:GLBuffer(GL_ARRAY_BUFFER_ARB,sizeof(Vertex))
+	{
+	}
+
+template <class VertexParam>
+inline
+GLVertexBuffer<VertexParam>::GLVertexBuffer(
+	size_t sNumVertices,
+	const typename GLVertexBuffer<VertexParam>::Vertex* sSourceVertices,
+	GLenum sBufferUsage)
+	:GLBuffer(GL_ARRAY_BUFFER_ARB,sizeof(Vertex),sNumVertices,sSourceVertices,sBufferUsage)
+	{
+	}
+
+template <class VertexParam>
+inline
+GLBuffer::DataItem*
+GLVertexBuffer<VertexParam>::bind(
+	GLContextData& contextData) const
+	{
+	/* Call the base class method: */
+	DataItem* result=GLBuffer::bind(contextData);
+	
+	/* Set up vertex array rendering: */
+	GLVertexArrayParts::enable(Vertex::getPartsMask());
+	glVertexPointer(static_cast<const Vertex*>(0));
+	
+	return result;
+	}
+
+template <class VertexParam>
+inline
+void
+GLVertexBuffer<VertexParam>::unbind(
+	void) const
+	{
+	/* Disable vertex array rendering: */
+	GLVertexArrayParts::disable(Vertex::getPartsMask());
+	
+	/* Call the base class method: */
+	GLBuffer::unbind();
+	}
+
+template <class VertexParam>
+inline
+void
+GLVertexBuffer<VertexParam>::draw(
+	GLenum mode,
+	GLBuffer::DataItem*) const
+	{
+	/* Draw the buffer: */
+	glDrawArrays(mode,0,GLsizei(getNumElements()));
+	}
+
+template <class VertexParam>
+inline
+void
+GLVertexBuffer<VertexParam>::draw(
+	GLenum mode,
+	GLint first,
+	GLsizei count,
+	GLBuffer::DataItem*) const
+	{
+	/* Draw the buffer subset: */
+	glDrawArrays(mode,first,count);
+	}

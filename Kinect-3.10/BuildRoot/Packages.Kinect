@@ -1,0 +1,44 @@
+########################################################################
+# Packages.Kinect - List of Kinect sub-packages that can be included/
+# linked into projects.
+# Copyright (c) 2011-2021 Oliver Kreylos
+#
+# This file is part of the WhyTools Build Environment.
+# 
+# The WhyTools Build Environment is free software; you can redistribute
+# it and/or modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2 of the
+# License, or (at your option) any later version.
+# 
+# The WhyTools Build Environment is distributed in the hope that it will
+# be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+# of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with the WhyTools Build Environment; if not, write to the Free
+# Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+# 02111-1307 USA
+########################################################################
+
+# Intel's librealsense library
+REALSENSE_BASEDIR = $(shell $(VRUI_MAKEDIR)/FindLibrary.sh librealsense/rs.h librealsense.$(DSOFILEEXT) $(INCLUDEEXT) $(LIBEXT) $(SYSTEM_PACKAGE_SEARCH_PATHS))
+REALSENSE_DEPENDS = 
+REALSENSE_INCLUDE = -I$(REALSENSE_BASEDIR)/$(INCLUDEEXT)
+REALSENSE_LIBDIR  = -L$(REALSENSE_BASEDIR)/$(LIBEXT)
+REALSENSE_LIBS    = -lrealsense
+REALSENSE_RPATH   = $(REALSENSE_BASEDIR)/$(LIBEXT)
+
+ifneq ($(strip $(REALSENSE_BASEDIR)),)
+  SYSTEM_HAVE_REALSENSE = 1
+else
+  SYSTEM_HAVE_REALSENSE = 0
+endif
+
+MYKINECT_BASEDIR = $(VRUI_PACKAGEROOT)
+MYKINECT_DEPENDS = MYVIDEO MYGLMOTIF MYGLSUPPORT MYGEOMETRY MYMATH MYCOMM MYIO MYUSB MYTHREADS MYREALTIME MYMISC GL
+MYKINECT_DEPENDS_INLINE = MYTHREADS MYMISC
+MYKINECT_INCLUDE = -I$(VRUI_INCLUDEDIR)
+MYKINECT_LIBDIR  = -L$(VRUI_LIBDIR)
+MYKINECT_LIBS    = -lKinect$(LDEXT)
+MYKINECT_RPATH   = $(VRUI_RPATH)
