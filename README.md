@@ -1,13 +1,15 @@
 # ARSandbox
-This Repo was created to streamline the installation process for the Augmented Reality Sandbox, created and maintained by Oliver Kreylos at UC Davis. Mr. Kreylos has done phenomenal work with this and I wanted to share my installation process and current setup. I am mostly maintaining this for myself if it were to ever break or become corrupted, but also to hopefully make it easier for anyone else wanting to create their own ARSandbox. Last but not least, I am also sharing these instructions in the event they were ever lost. At the time of writing, the dedicated website for the ARSandbox is now inaccessible. This made my job slightly more difficult as I had some specific needs for my project.
+This is a forked Repo from the UC Davis' Augmented Reality Sandbox created by Oliver Kreylos. With his permission, and under the GPLv2 license, I am sharing my own changes (albeit minor) to the Sandbox as I set it up at my school. I am mostly maintaining this for myself if it were to ever break or become corrupted, but also to hopefully make it easier for anyone else wanting to create their own ARSandbox. Last but not least, I am also sharing these instructions in the event they were ever lost. At the time of writing, the dedicated website for the ARSandbox is now inaccessible. This made my job slightly more difficult as I had some specific needs for my project.
 
 ## Software Required
 These instructions are up-to-date with the following software versions:
 
-- Linux Mint 19.3 ("Tricia") with MATE desktop environment, 64-bit version. Currently supported until April 2023. [Download Here](https://linuxmint.com/edition.php?id=276)
+- Linux Mint 20.3 ("Una") with MATE desktop environment, 64-bit version. Currently supported until April 2023. [Download Here](https://linuxmint.com/edition.php?id=293)
 - Version 8.0-002 of the Vrui VR Development Toolkit (automatically selected by Vrui installation script). [Download Here](https://web.cs.ucdavis.edu/~okreylos/ResDev/Vrui/index.html)
 - Version 3.10 of the Kinect 3D Video Package. [Download Here](https://web.cs.ucdavis.edu/~okreylos/ResDev/Kinect/index.html)
 - Version 2.8 of the Augmented Reality Sandbox. [Download Here](https://web.cs.ucdavis.edu/~okreylos/ResDev/SARndbox/)
+
+Additionally, I used some scripts from [RiverWeyTrust/ARSandbox-Adds](https://github.com/RiverWeyTrust/ARSandbox-Adds) to add weather effects such as lava and snow to our ARSandbox. They are also included in the files above, but it's necessary to give them a shoutout for their work.
 
 ## Hardware Required
 Find Hardware Instructions [Here](https://web.cs.ucdavis.edu/~okreylos/ResDev/SARndbox/).
@@ -27,19 +29,19 @@ Taken from the following page: [Software Installation](https://web.cs.ucdavis.ed
 
 This page holds complete, step-by-step installation and set-up instructions for the AR Sandbox software, starting from a blank desktop PC with an Nvidia GeForce graphics processing unit (GPU). These instructions are based on the current version of the Linux Mint operating system. Due to increasing weirdness in recent versions of Mac OS X (starting with version 10.7), we can no longer recommend Mac computers and Mac OS X to drive AR Sandbox installations.
 
-Installation steps 1 to 5 install Linux and the AR Sandbox software, including its underlying Vrui and Kinect packages. There is also [a full walk-through video](https://www.youtube.com/watch?v=R0UyMeJ2pYc) of these steps. The video is for an older version of Linux Mint as well as older versions of the Vrui, Kinect, and AR Sandbox packages; in case of any (small) discrepancies between the video and these instructions, ignore the video and follow these instructions.
+Installation steps 1 to 5 install Linux and the AR Sandbox software, including its underlying Vrui and Kinect packages.
 
 #### Step 1: Install Linux
 
-Install the 64-bit version of Linux Mint 19.3 ("Tricia") with MATE desktop environment on a blank desktop computer. This needs to be a real computer; the AR Sandbox does not work from inside a virtual machine.
+Install the 64-bit version of Linux Mint 20.3 ("Una") with MATE desktop environment on a blank desktop computer. This needs to be a real computer; the AR Sandbox does not work from inside a virtual machine.
 
-If you plan to run the AR Sandbox as a computational appliance, i.e., a closed system with no Internet connection, keyboard, mouse, or monitor besides the projector, where the AR Sandbox application starts automatically when you power on the PC, you should prepare for this early on during installation of Linux. One of the installation steps is to create a user account on the new operating system. At that point, check the option to log into that account automatically, and do not assign a password. Then, after the installation is done, follow optional Step 16 and Step 17. There should be no differences between Linux Mint 19 and Linux Mint 19.3.
+If you plan to run the AR Sandbox as a computational appliance, i.e., a closed system with no Internet connection, keyboard, mouse, or monitor besides the projector, where the AR Sandbox application starts automatically when you power on the PC, you should prepare for this early on during installation of Linux. One of the installation steps is to create a user account on the new operating system. At that point, check the option to log into that account automatically, and do not assign a password. Then, after the installation is done, follow optional Step 16 and Step 17.
 
 #### Step 2: Install Nvidia Driver
 
-Install vendor-supplied drivers for your Nvidia graphics card. Open the Control Center, select "Driver Manager," wait for the panel to show up and the list of available drivers to be populated, and then select the recommended Nvidia binary driver and press "Apply Changes." Then wait until the change is complete (might take a while), and reboot your computer when prompted. This process is described in detail in the illustrated step-by-step guide to installing Linux Mint 19 ("Tara").
+Install vendor-supplied drivers for your Nvidia graphics card. Open the Control Center, select "Driver Manager," wait for the panel to show up and the list of available drivers to be populated, and then select the recommended Nvidia binary driver and press "Apply Changes." Then wait until the change is complete (might take a while), and reboot your computer when prompted. This process is described in detail in the illustrated step-by-step guide to installing Linux Mint 20 ("Una").
 
-After installing the driver and rebooting the computer, check that the driver is working correctly by opening a terminal window and entering precisely the following command (if in doubt, copy&paste directly from this web page):
+After installing the driver and rebooting the computer, check that the driver is working correctly by opening a terminal window and entering precisely the following command:
 
 	glxinfo | grep vendor
 
@@ -58,8 +60,6 @@ Open a terminal window and enter precisely the following commands (if in doubt, 
 	cd ~
 	wget http://web.cs.ucdavis.edu/~okreylos/ResDev/Vrui/Build-Ubuntu.sh
 	bash Build-Ubuntu.sh
-
-**Protip:** The quickest way to copy&paste in Linux is to highlight the text you want to copy with the left mouse button, then move the mouse to where you want to copy the selected text, and click the middle mouse button.
 
 The script run in the last command will ask you for your user's password to install prerequisite libraries, and then build the Vrui VR Toolkit. That will take a little while and produce lots of output, and at the end you'll be greeted by a spinning globe in a window.
 
@@ -174,8 +174,6 @@ You need to enter the base plane equation (and the 3D sand surface extents in th
 	cd ~/src/SARndbox-2.8
 	xed etc/SARndbox-2.8/BoxLayout.txt &
 
-The ampersand ("&") at the end of the second command will keep the terminal window usable while the text editor is running. Now enter the base plane equation as described in the video. To copy text from a terminal window, highlight the desired text with the mouse, and then either right-click into the terminal window and select "Copy" from the pop-up menu that appears, or press Shift-Ctrl-c. To paste into the text editor, use the "Edit" menu, or press Ctrl-v. Or, highlight the desired text in the terminal window with the mouse, and then move the mouse into the desired position in the text editor window and press the middle mouse button to copy and paste.
-
 `RawKinectViewer` prints two plane equations when a depth plane is extracted: the first in depth space, the second in camera space. The AR Sandbox needs the second, camera-space, plane equation. After copying it, the equation has to be reformatted slightly. RawKinectViewer will print:
 
 	Camera-space plane equation: x * <some vector> = <some offset>
@@ -289,7 +287,7 @@ Into that new file, paste exactly the following text:
 		endsection
 	endsection
 
-then save the new file and exit from the text editor. (Reminder: You can copy & paste the above text by highlighting the entire contents of the text box with the left mouse button, then moving the mouse over into the empty text editor window, and pressing the middle mouse button.)
+then save the new file and exit from the text editor.
 
 If you now start `CalibrateProjector`, its window will cover the entire screen, with no title bars or panels remaining. If you press the "1" key, the program will capture a calibration tie point, and if you press the "2" key, it will re-capture the background, indicated by the screen turning red for two seconds.
 
