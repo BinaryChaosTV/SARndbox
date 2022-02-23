@@ -12,4 +12,6 @@
         ;;
      "snow") sh ~/src/scripts/switch-to-water.sh
         ;;
+     "erosion") sh ~/src/scripts/switch-to-erosion.sh
+        ;;
     esac
