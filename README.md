@@ -9,7 +9,15 @@ These instructions are up-to-date with the following software versions:
 - Version 3.10 of the Kinect 3D Video Package. [Download Here](https://web.cs.ucdavis.edu/~okreylos/ResDev/Kinect/index.html)
 - Version 2.8 of the Augmented Reality Sandbox. [Download Here](https://web.cs.ucdavis.edu/~okreylos/ResDev/SARndbox/)
 
-Additionally, I used some scripts from [RiverWeyTrust/ARSandbox-Adds](https://github.com/RiverWeyTrust/ARSandbox-Adds) to add weather effects such as lava and snow to our ARSandbox. They are also included in the files above, but it's necessary to give them a shoutout for their work.
+## Add-ons
+
+### Weather Effects
+
+I used some scripts from [RiverWeyTrust/ARSandbox-Adds](https://github.com/RiverWeyTrust/ARSandbox-Adds) to add weather effects such as lava and snow to our ARSandbox. They are also included in the files above, but it's necessary to give them a shoutout for their work.
+
+### Erosion Effects
+
+One of the effects which behave much like the weather effects from RiverWeyTrust is the Erosion effect from [danigeos/sARndbox](https://github.com/danigeos/sARndbox). I've also gone ahead and added the effect to the rotation in the same scripts.
 
 ## Hardware Required
 Find Hardware Instructions [Here](https://web.cs.ucdavis.edu/~okreylos/ResDev/SARndbox/).
