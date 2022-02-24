@@ -10,8 +10,8 @@
         ;;
      "lava") sh ~/src/scripts/switch-to-snow.sh
         ;;
-     "snow") sh ~/src/scripts/switch-to-water.sh
+     "snow") sh ~/src/scripts/switch-to-erosion.sh
         ;;
-     "erosion") sh ~/src/scripts/switch-to-erosion.sh
+     "erosion") sh ~/src/scripts/switch-to-water.sh
         ;;
     esac
