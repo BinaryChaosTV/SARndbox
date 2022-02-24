@@ -204,10 +204,10 @@ void addWaterColor(in vec2 fragCoord,inout vec4 baseColor)
 		}
 
 		/*Compute slope vector for glittering*/
-		vec3 wn=normalize(vec3(texture2DRect(quantitySampler,vec2(waterLevelTexCoord.x-1.0,waterLevelTexCoord.y)).r-
-		                       texture2DRect(quantitySampler,vec2(waterLevelTexCoord.x+1.0,waterLevelTexCoord.y)).r,
-		                       texture2DRect(quantitySampler,vec2(waterLevelTexCoord.x,waterLevelTexCoord.y-1.0)).r-
-		                       texture2DRect(quantitySampler,vec2(waterLevelTexCoord.x,waterLevelTexCoord.y+1.0)).r,
+		vec3 wn=normalize(vec3(texture2DRect(quantitySampler,vec2(waterTexCoord.x-1.0,waterTexCoord.y)).r-
+		                       texture2DRect(quantitySampler,vec2(waterTexCoord.x+1.0,waterTexCoord.y)).r,
+		                       texture2DRect(quantitySampler,vec2(waterTexCoord.x,waterTexCoord.y-1.0)).r-
+		                       texture2DRect(quantitySampler,vec2(waterTexCoord.x,waterTexCoord.y+1.0)).r,
 		                       0.25));
         //Water Glittering color factor from 0 to 1:
 		float colorG=pow(dot(wn,normalize(vec3(0.075,0.075,1.0))),100.0)*.5+0.;
@@ -229,7 +229,7 @@ void addWaterColorAdvected(inout vec4 baseColor)
 	{
 	#if 0
 	/* Check if the surface is under water: */
-	vec3 waterLevelTex=texture2DRect(waterLevelSampler,waterLevelTexCoord).rgb;
+	vec3 waterLevelTex=texture2DRect(waterLevelSampler,waterTexCoord).rgb;
 	if(waterLevelTex.b>=1.0/2048.0)
 		{
 		/* Calculate the water color: */
