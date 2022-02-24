@@ -146,7 +146,7 @@ uniform sampler2DRect quantitySampler;
 uniform float waterOpacity;
 uniform float waterAnimationTime;
 
-varying vec2 waterLevelTexCoord; // Texture coordinate for water level texture
+varying vec2 waterTexCoord; // Texture coordinate for water level texture
 
 /***********************************************************************
 Water shading function using a one-component water level texture and
@@ -156,11 +156,11 @@ fixed texture coordinates:
 void addWaterColor(in vec2 fragCoord,inout vec4 baseColor)
 	{
 	/* Calculate the water column height above this fragment: .r is top and b is bottom*/
-	float b=(texture2DRect(bathymetrySampler,vec2(waterLevelTexCoord.x-1.0,waterLevelTexCoord.y-1.0)).r+
-	         texture2DRect(bathymetrySampler,vec2(waterLevelTexCoord.x,waterLevelTexCoord.y-1.0)).r+
-	         texture2DRect(bathymetrySampler,vec2(waterLevelTexCoord.x-1.0,waterLevelTexCoord.y)).r+
-	         texture2DRect(bathymetrySampler,waterLevelTexCoord.xy).r)*0.25;
-	float waterLevel=texture2DRect(quantitySampler,waterLevelTexCoord).r-b;//water column depth
+	float b=(texture2DRect(bathymetrySampler,vec2(waterTexCoord.x-1.0,waterTexCoord.y-1.0)).r+
+	         texture2DRect(bathymetrySampler,vec2(waterTexCoord.x,waterTexCoord.y-1.0)).r+
+	         texture2DRect(bathymetrySampler,vec2(waterTexCoord.x-1.0,waterTexCoord.y)).r+
+	         texture2DRect(bathymetrySampler,waterTexCoord.xy).r)*0.25;
+	float waterLevel=texture2DRect(quantitySampler,waterTexCoord).r-b;//water column depth
 	
 	
 	
@@ -170,8 +170,8 @@ void addWaterColor(in vec2 fragCoord,inout vec4 baseColor)
 		/* Calculate the water color based on velocity*depth (momentum): */		
 		//Added by Samadrita Karmakar (sam90_karmakar@yahoo.co.in) and DGC
         //Linear Interpolation of Color
-		float vx=((texture2DRect(quantitySampler,waterLevelTexCoord).g))/waterLevel;
-        float vy=((texture2DRect(quantitySampler,waterLevelTexCoord).b))/waterLevel;
+		float vx=((texture2DRect(quantitySampler,waterTexCoord).g))/waterLevel;
+        float vy=((texture2DRect(quantitySampler,waterTexCoord).b))/waterLevel;
 		//float energy=(vx*vx+vy*vy)*waterLevel; //ENERGY color criterion
 		float energy=sqrt(vx*vx+vy*vy)*waterLevel; //MOMENTUM color criterion
 		float min_energy_sedi=.28; //Wwater color is sedim below this value; starts to change to normal
