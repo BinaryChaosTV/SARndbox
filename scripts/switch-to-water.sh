@@ -5,6 +5,6 @@
 #
 cp ~/src/SARndbox-2.8/scripts/SurfaceAddWaterColor-Water.fs ~/src/SARndbox-2.8/share/SARndbox-2.8/Shaders/SurfaceAddWaterColor.fs
 echo 'Switching to water.'
-echo "water" > ~/src/scripts/weather_file.tmp
+echo "water" > ~/src/SARndbox-2.8/scripts/weather_file.tmp
 #echo "waterAttenuation 0.0078125" > SARndbox.fifo
 #echo "waterSpeed 0.85" > SARndbox.fifo

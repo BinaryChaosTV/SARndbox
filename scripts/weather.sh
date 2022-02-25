@@ -2,7 +2,7 @@
 #!/bin/bash
 
 # pick up current state
-  weather=$(cat ~/src/scripts/weather_file.tmp);
+  weather=$(cat ~/src/SARndbox-2.8/scripts/weather_file.tmp);
  
 # use case statement to set the assignment to the next cycle value
     case $weather in
