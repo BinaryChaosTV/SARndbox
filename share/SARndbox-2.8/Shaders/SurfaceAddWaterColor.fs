@@ -1,16 +1,20 @@
 /***********************************************************************
 SurfaceAddWaterColor - Shader fragment to modify the base color of a
 surface if the current fragment is under water.
-Copyright (c) 2012 Oliver Kreylos
+Copyright (c) 2012-2015 Oliver Kreylos
+
 This file is part of the Augmented Reality Sandbox (SARndbox).
+
 The Augmented Reality Sandbox is free software; you can redistribute it
 and/or modify it under the terms of the GNU General Public License as
 published by the Free Software Foundation; either version 2 of the
 License, or (at your option) any later version.
+
 The Augmented Reality Sandbox is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 General Public License for more details.
+
 You should have received a copy of the GNU General Public License along
 with the Augmented Reality Sandbox; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
@@ -23,11 +27,6 @@ Helper functions to calculate 3D simplex Perlin noise. Code from Ian
 McEwan, David Sheets, Stefan Gustavson, and Mark Richardson, according
 to their 2012 JGT paper. Code included under MIT license.
 **********************************************************************/
-
-//Erosion and sedimentation visualization:
-//Modified by Daniel Garcia-Castellanos (danielgc@ictja.csic.es) & Samadrita Karmakar (sam90_karmakar@yahoo.co.in)
-//From ICTJA-CSIC (Barcelona)
-
 
 vec3 mod289(vec3 x) {
   return x - floor(x * (1.0 / 289.0)) * 289.0;
@@ -143,6 +142,7 @@ Water shading function:
 
 uniform sampler2DRect bathymetrySampler;
 uniform sampler2DRect quantitySampler;
+uniform vec2 waterCellSize;
 uniform float waterOpacity;
 uniform float waterAnimationTime;
 
@@ -155,67 +155,33 @@ fixed texture coordinates:
 
 void addWaterColor(in vec2 fragCoord,inout vec4 baseColor)
 	{
-	/* Calculate the water column height above this fragment: .r is top and b is bottom*/
+	/* Calculate the water column height above this fragment: */
 	float b=(texture2DRect(bathymetrySampler,vec2(waterTexCoord.x-1.0,waterTexCoord.y-1.0)).r+
 	         texture2DRect(bathymetrySampler,vec2(waterTexCoord.x,waterTexCoord.y-1.0)).r+
 	         texture2DRect(bathymetrySampler,vec2(waterTexCoord.x-1.0,waterTexCoord.y)).r+
 	         texture2DRect(bathymetrySampler,waterTexCoord.xy).r)*0.25;
-	float waterLevel=texture2DRect(quantitySampler,waterTexCoord).r-b;//water column depth
-	
-	
+	float waterLevel=texture2DRect(quantitySampler,waterTexCoord).r-b;
 	
 	/* Check if the surface is under water: */
 	if(waterLevel>0.0)
 		{
-		/* Calculate the water color based on velocity*depth (momentum): */		
-		//Added by Samadrita Karmakar (sam90_karmakar@yahoo.co.in) and DGC
-        //Linear Interpolation of Color
-		float vx=((texture2DRect(quantitySampler,waterTexCoord).g))/waterLevel;
-        float vy=((texture2DRect(quantitySampler,waterTexCoord).b))/waterLevel;
-		//float energy=(vx*vx+vy*vy)*waterLevel; //ENERGY color criterion
-		float energy=sqrt(vx*vx+vy*vy)*waterLevel; //MOMENTUM color criterion
-		float min_energy_sedi=.28; //Wwater color is sedim below this value; starts to change to normal
-		float max_energy_sedi=.3; //Lower value for normal water color
-		float min_energy_eros=2.5; //Upper value for normal color; starts to change to erosion
-		float max_energy_eros=3.0; //Water color is erosion above this value
-
-		/*Set a vector with the 3 color components*/
-		vec3 watcol;
-        /*Default colors for intermediate (normal) energy range*/
-		watcol.r=0; 
-		watcol.g=0;
-        watcol.b=1;
-		/*How much color change out of the normal range:*/
-		float bsed=.2, bero=.6; //0 means do not differenciate - 1 means pure color
+		/* Calculate the water color: */
+		// float colorW=max(snoise(vec3(fragCoord*0.05,waterAnimationTime*0.25)),0.0); // Simple noise function
+		// float colorW=max(turb(vec3(fragCoord*0.05,waterAnimationTime*0.25)),0.0); // Turbulence noise
 		
-		//linear color change for sedimentation 
-		if (energy<max_energy_sedi) {
-			float fac=(energy-min_energy_sedi)/(max_energy_sedi-min_energy_sedi);
-			if (energy<min_energy_sedi) fac=0;
-			watcol.g=bsed*(1-fac);
-			watcol.b=1-bsed*5*(1-fac);
-		}
-		//linear color change for erosion
-		if (energy>min_energy_eros) {
-			float fac=(energy-min_energy_eros)/(max_energy_eros-min_energy_eros);
-			if (energy>max_energy_eros) fac=1;
-			watcol.r=bero*fac;
-			watcol.b=1-bero*5*fac;
-		}
-
-		/*Compute slope vector for glittering*/
-		vec3 wn=normalize(vec3(texture2DRect(quantitySampler,vec2(waterTexCoord.x-1.0,waterTexCoord.y)).r-
-		                       texture2DRect(quantitySampler,vec2(waterTexCoord.x+1.0,waterTexCoord.y)).r,
-		                       texture2DRect(quantitySampler,vec2(waterTexCoord.x,waterTexCoord.y-1.0)).r-
-		                       texture2DRect(quantitySampler,vec2(waterTexCoord.x,waterTexCoord.y+1.0)).r,
-		                       0.25));
-        //Water Glittering color factor from 0 to 1:
-		float colorG=pow(dot(wn,normalize(vec3(0.075,0.075,1.0))),100.0)*.5+0.;
-		//vec4 waterColor=vec4(colorG,colorG,1.0,1.0); // Water
-		//vec4 waterColor=vec4(1.0-colorG,1.0-colorG*2.0,0.0,1.0); // Lava
-		vec4 waterColor=vec4(colorG+watcol.r,colorG+watcol.g,colorG+watcol.b,1.0);
-		/*Opacity: Mix the water color with the base surface color based on the water level:*/
-		baseColor=mix(baseColor,waterColor,min(waterLevel*waterOpacity*20,1.0));
+		vec3 wn=normalize(vec3((texture2DRect(quantitySampler,vec2(waterTexCoord.x-1.0,waterTexCoord.y)).r-
+		                        texture2DRect(quantitySampler,vec2(waterTexCoord.x+1.0,waterTexCoord.y)).r)*waterCellSize.y,
+		                       (texture2DRect(quantitySampler,vec2(waterTexCoord.x,waterTexCoord.y-1.0)).r-
+		                        texture2DRect(quantitySampler,vec2(waterTexCoord.x,waterTexCoord.y+1.0)).r)*waterCellSize.x,
+		                       2.0*waterCellSize.x*waterCellSize.y));
+		float colorW=pow(dot(wn,normalize(vec3(0.075,0.075,1.0))),100.0)*1.0-0.0;
+		
+		vec4 waterColor=vec4(colorW,colorW,1.0,1.0); // Water
+		// vec4 waterColor=vec4(1.0-colorW,1.0-colorW*2.0,0.0,1.0); // Lava
+		// vec4 waterColor=vec4(0.0,0.0,1.0,1.0); // Blue
+		
+		/* Mix the water color with the base surface color based on the water level: */
+		baseColor=mix(baseColor,waterColor,min(waterLevel*waterOpacity,1.0));
 		}
 	}
 
@@ -243,7 +209,7 @@ void addWaterColorAdvected(inout vec4 baseColor)
 		//float colorW=1.0-pow(noiseNormal.z,2.0);
 		
 		vec4 waterColor=vec4(1.0-colorW,1.0-colorW,1.0,1.0); // Water
-		//vec4 waterColor=vec4(1.0-colorW,1.0-colorW*2.0,0.0,1.0); // Lava
+		// vec4 waterColor=vec4(1.0-colorW,1.0-colorW*2.0,0.0,1.0); // Lava
 		
 		/* Mix the water color with the base surface color based on the water level: */
 		baseColor=mix(baseColor,waterColor,min(waterLevelTex.b*waterOpacity,1.0));
