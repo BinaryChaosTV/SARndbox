@@ -3,7 +3,7 @@
 #   Script:  Switch-to-water.sh
 #   Script to switch from snow or lava to water
 #
-cp ~/src/scripts/SurfaceAddWaterColor-Water.fs ~/src/SARndbox-2.8/share/SARndbox-2.8/Shaders/SurfaceAddWaterColor.fs
+cp ~/src/SARndbox-2.8/scripts/SurfaceAddWaterColor-Water.fs ~/src/SARndbox-2.8/share/SARndbox-2.8/Shaders/SurfaceAddWaterColor.fs
 echo 'Switching to water.'
 echo "water" > ~/src/scripts/weather_file.tmp
 #echo "waterAttenuation 0.0078125" > SARndbox.fifo
