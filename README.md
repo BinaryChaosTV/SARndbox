@@ -24,8 +24,8 @@ Find Hardware Instructions [Here](https://web.cs.ucdavis.edu/~okreylos/ResDev/SA
 
 An AR Sandbox requires the following hardware components:
 
-- A computer with a good graphics card, running any version of Linux. The AR Sandbox software, in principle, also runs on Mac OS X, but we advise against it. We strongly recommend using desktop computers over laptop computers. For one, laptop computers powerful enough to run an AR Sandbox are typically more expensive than desktop computers of comparable power; second, laptop computers with high-end Nvidia graphics cards often contain so-called Nvidia Optimus technology to reduce system power usage by dynamically switching between the high-performance discrete graphics processing unit (GPU) and the main CPU's low-performance integrated graphics processor (IGP). Optimus is not fully supported on Linux, and may prevent access to the discrete graphics card entirely. Our current PC uses an Nvidia GTX 1060.
-- The AR Sandbox does not run under Windows, and neither does it run from within a virtual machine. It either requires a PC exclusively running Linux, or a dual-boot setup with Linux and Windows.
+- A computer with a good graphics card, running any version of Linux. We strongly recommend using desktop computers over laptop computers. For one, laptop computers powerful enough to run an AR Sandbox are typically more expensive than desktop computers of comparable power; second, laptop computers with high-end Nvidia graphics cards often contain so-called Nvidia Optimus technology to reduce system power usage by dynamically switching between the high-performance discrete graphics processing unit (GPU) and the main CPU's low-performance integrated graphics processor (IGP). Optimus is not fully supported on Linux, and may prevent access to the discrete graphics card entirely. Our current PC uses an Nvidia GTX 1060.
+- The AR Sandbox does not run under Windows, MacOS, or Virtual Machine. It either requires a PC exclusively running Linux, or a dual-boot setup with Linux.
 - A Microsoft Kinect 3D camera. The AR Sandbox software, or rather the underlying Kinect 3D Video Package as of version 2.8, supports all three models of the first-generation Kinect (Kinect-for-Xbox 1414 and 1473 and Kinect for Windows). All three are functionally identical, so get the cheapest model you can find. Note: The second-generation Kinect (Kinect for Xbox One or Kinect for Windows v2) is experimentally supported by the AR Sandbox software as of version 2.4, when using version 3.4 of the Kinect 3D Video Package.
 - A digital data projector with a digital video interface, such as HDMI, DVI, or DisplayPort.
 - A sandbox with a way to mount the Kinect camera and the projector above the sandbox.
@@ -35,7 +35,7 @@ An AR Sandbox requires the following hardware components:
 
 Taken from the following page: [Software Installation](https://web.cs.ucdavis.edu/~okreylos/ResDev/SARndbox/index.html)
 
-This page holds complete, step-by-step installation and set-up instructions for the AR Sandbox software, starting from a blank desktop PC with an Nvidia GeForce graphics processing unit (GPU). These instructions are based on the current version of the Linux Mint operating system. Due to increasing weirdness in recent versions of Mac OS X (starting with version 10.7), we can no longer recommend Mac computers and Mac OS X to drive AR Sandbox installations.
+This page holds complete, step-by-step installation and set-up instructions for the AR Sandbox software, starting from a blank desktop PC with an Nvidia GeForce graphics processing unit (GPU). These instructions are based on the current version of the Linux Mint operating system.
 
 Installation steps 1 to 5 install Linux and the AR Sandbox software, including its underlying Vrui and Kinect packages.
 
@@ -47,7 +47,7 @@ If you plan to run the AR Sandbox as a computational appliance, i.e., a closed s
 
 #### Step 2: Install Nvidia Driver
 
-Install vendor-supplied drivers for your Nvidia graphics card. Open the Control Center, select "Driver Manager," wait for the panel to show up and the list of available drivers to be populated, and then select the recommended Nvidia binary driver and press "Apply Changes." Then wait until the change is complete (might take a while), and reboot your computer when prompted. This process is described in detail in the illustrated step-by-step guide to installing Linux Mint 20 ("Una").
+Install vendor-supplied drivers for your Nvidia graphics card. Open the Control Center, select "Driver Manager," wait for the panel to show up and the list of available drivers to be populated, and then select the recommended Nvidia binary driver and press "Apply Changes." Then wait until the change is complete (might take a while), and reboot your computer when prompted.
 
 After installing the driver and rebooting the computer, check that the driver is working correctly by opening a terminal window and entering precisely the following command:
 
@@ -295,8 +295,6 @@ Into that new file, paste exactly the following text:
 		endsection
 	endsection
 
-then save the new file and exit from the text editor.
-
 If you now start `CalibrateProjector`, its window will cover the entire screen, with no title bars or panels remaining. If you press the "1" key, the program will capture a calibration tie point, and if you press the "2" key, it will re-capture the background, indicated by the screen turning red for two seconds.
 
 You can replace the "1" and "2" key names in the "bindings" tag with any other keys you like.
@@ -336,15 +334,11 @@ Into that new file, paste exactly the following text:
 		endsection
 	endsection
 
-then save the new file and exit from the text editor.
-
 As in Step 14, this will force `SARndbox` to start in full-screen mode, ensuring that the calibration created using `CalibrateProjector` exactly matches the one used in the actual AR Sandbox. In addition, the `inhibitScreenSaver` setting will prevent the screen from blanking if no keys are pressed, and the `mouseIdleTimeout 5.0` setting will hide the mouse cursor after five seconds of inactivity. To get the cursor back (for menu interactions etc.), simply move the mouse. Finally, the `WaterTool` section binds a tool to add or remove water to/from the entire AR Sandbox, by pressing "1" to rain, and "2" to drain. As previously, set the binding to whatever keys you prefer.
 
 #### Step 16: Create a Desktop Icon to Launch the AR Sandbox
 
-Starting the AR Sandbox may require typing a lengthy command line into a terminal window, which might get tedious. To simplify things, you can create a desktop icon to launch the AR Sandbox by simply double-clicking. This is best done in two steps: first, create a shell script to launch the SARndbox application with all command line arguments; second, link that shell script to a desktop icon.
-
-To create a shell script, run in a terminal window:
+You can create a desktop icon to launch the AR Sandbox. This is best done in two steps: first, create a shell script to launch the SARndbox application with all command line arguments; second, link that shell script to a desktop icon. To create a shell script, run in a terminal window:
 
 	xed ~/src/SARndbox-2.8/RunSARndbox.sh
 
@@ -380,7 +374,7 @@ Into the empty text file, paste the following contents:
 	Name[en_US]=
 	Exec=/home/<username>/src/SARndbox-2.8/RunSARndbox.sh
 	Comment[en_US]=
-	Name=Start the AR Sandbox
+	Name= Run SARndbox
 	Comment=
 
 Replace `<username>` with your actual user name, to locate the shell script created in the previous step. Then save the file, exit the text editor, and make the file executable:
@@ -443,7 +437,7 @@ To turn the projector off again, run:
 
 #### Step 19: Show a Secondary View of the AR Sandbox
 
-If you have multiple displays connected to the PC running your AR Sandbox, and have done the multi-screen setup in Step 18, then you can show a second display window that does not just replicate the projected view shown in the sandbox itself, but that can show the captured 3D topography from arbitrary points of view, in full 3D, as explained in this video.
+If you have multiple displays connected to the PC running your AR Sandbox, and have done the multi-screen setup in Step 18, then you can show a second display window that does not just replicate the projected view shown in the sandbox itself, but that can show the captured 3D topography from arbitrary points of view, in full 3D.
 
 To create a secondary view, you first need to edit the `SARndbox` application's configuration file and instruct it to open a second window on a different display. Run in a terminal window:
 
@@ -456,8 +450,7 @@ At the beginning of the `Desktop` section, insert the following setting:
 			# Open a second window:
 			windowNames += (Window2)
 			...
-		endsection
-	endsection
+
 
 Then, after the existing `Window` section, insert a new section `Window2` with the following settings:
 
@@ -514,3 +507,40 @@ and change the command line to:
 
 If you changed the name of the view file before saving it (or renamed it later), use the correct name here. Afterwards, the AR Sandbox will start up with your preferred view displayed in its secondary window.
 
+## Command Line Arguments
+
+The SARndbox has a plethora of command line arguments which can be used to configure your sandbox without requiring changes in your files.
+
+ Command | Default | Description 
+ --- | --- | ---
+ `-h` | | Prints this help message
+ `-remote [<listening port ID>]` | listening port ID: 26000 | Creates a data streaming server listening on TCP port <listening port ID>.
+ `-c <camera index>` | 0 | Selects the local 3D camera of the given index (0: first camera on USB bus).
+ `-f <frame file name prefix>` | | Reads a pre-recorded 3D video stream from a pair of color/depth files of the given file name prefix.
+| `-s <scale factor>` | 100.0 (1:100 scale, 1cm in sandbox is 1m in terrain) | Scale factor from real sandbox to simulated terrain.
+| `-slf <sandbox layout file name>` | | Loads the sandbox layout file of the given name.
+| `-er <min elevation> <max elevation>` | Range of elevation color map | Sets the range of valid sand surface elevations relative to the ground plane in cm.
+| `-hmp <x> <y> <z> <offset>` | | Sets an explicit base plane equation to use for height color mapping
+| `-nas <num averaging slots>` | 30 | Sets the number of averaging slots in the frame filter; latency is <num averaging slots> * 1/30 s.
+| `-sp <min num samples> <max variance>` | 10 2 | Sets the frame filter parameters minimum number of valid samples and maximum sample variance before convergence.
+| `-he <hysteresis envelope>` | 0.1 | Sets the size of the hysteresis envelope used for jitter removal.
+| `-wts <water grid width> <water grid height>` | 640 480 | Sets the width and height of the water flow simulation grid.
+| `-ws <water speed> <water max steps>` | 1.0 30 | Sets the relative speed of the water simulation and the maximum number of simulation steps per frame.
+| `-rer <min rain elevation> <max rain elevation>` | Above range of elevation color map | Sets the elevation range of the rain cloud level relative to the ground plane in cm.
+| `-rs <rain strength>` | 0.25 | Sets the strength of global or local rainfall in cm/s.
+| `-evr <evaporation rate>` | 0.0 | Water evaporation rate in cm/s.
+| `-dds <DEM distance scale>` | 1.0 | DEM matching distance scale factor in cm.
+| `-wi <window index>` | 0 | Sets the zero-based index of the display window to which the following rendering settings are applied.
+| `-fpv [projector transform file name]` | | Fixes the navigation transformation so that Kinect camera and projector are aligned, as defined by the projector transform file of the given name.
+| `-nhs` | | Disables hill shading
+| `-uhs` | | Enables hill shading
+| `-ns` | | Disables shadows
+| `-us` | | Enables shadows
+| `-nhm` | | Disables elevation color mapping
+| `-uhm [elevation color map file name]` | | Enables elevation color mapping and loads the elevation color map from the file of the given name. 
+| `-ncl` | | Disables topographic contour lines 
+| `-ucl [contour line spacing]` | 0.75 | Enables topographic contour lines and sets the elevation distance between adjacent contour lines to the given value in cm.
+| `-rws` | | Renders water surface as geometric surface 
+| `-rwt` | | Renders water surface as texture 
+| `-wo <water opacity>` | 2.0 | Sets the water depth at which water appears opaque in cm.
+| `-cp <control pipe name>` | | Sets the name of a named POSIX pipe from which to read control commands 
