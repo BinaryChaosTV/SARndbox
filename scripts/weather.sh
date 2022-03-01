@@ -1,4 +1,3 @@
-# weather.sh
 #!/bin/bash
 
 # pick up current state
@@ -10,6 +9,8 @@
         ;;
      "lava") sh ~/src/SARndbox-2.8/scripts/switch-to-snow.sh
         ;;
-     "snow") sh ~/src/SARndbox-2.8/scripts/switch-to-water.sh
+     "snow") sh ~/src/SARndbox-2.8/scripts/switch-to-erosion.sh
+        ;;
+     "erosion") sh ~/src/SARndbox-2.8/scripts/switch-to-water.sh
         ;;
     esac
