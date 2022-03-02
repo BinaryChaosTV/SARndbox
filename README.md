@@ -532,15 +532,15 @@ The SARndbox has a plethora of command line arguments which can be used to confi
 | `-dds <DEM distance scale>` | 1.0 | DEM matching distance scale factor in cm.
 | `-wi <window index>` | 0 | Sets the zero-based index of the display window to which the following rendering settings are applied.
 | `-fpv [projector transform file name]` | | Fixes the navigation transformation so that Kinect camera and projector are aligned, as defined by the projector transform file of the given name.
-| `-nhs` | | Disables hill shading
+| `-nhs` | Default | Disables hill shading
 | `-uhs` | | Enables hill shading
 | `-ns` | | Disables shadows
 | `-us` | | Enables shadows
-| `-nhm` | | Disables elevation color mapping
+| `-nhm` | Default | Disables elevation color mapping
 | `-uhm [elevation color map file name]` | | Enables elevation color mapping and loads the elevation color map from the file of the given name. 
 | `-ncl` | | Disables topographic contour lines 
 | `-ucl [contour line spacing]` | 0.75 | Enables topographic contour lines and sets the elevation distance between adjacent contour lines to the given value in cm.
 | `-rws` | | Renders water surface as geometric surface 
-| `-rwt` | | Renders water surface as texture 
+| `-rwt` | Default | Renders water surface as texture 
 | `-wo <water opacity>` | 2.0 | Sets the water depth at which water appears opaque in cm.
 | `-cp <control pipe name>` | | Sets the name of a named POSIX pipe from which to read control commands 
