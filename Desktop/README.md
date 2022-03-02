@@ -1,5 +1,5 @@
 # Installation
-In this folder, either place all the .desktop files on your personal desktop, or create symlinks to the .desktop files. You can do so by pasting the following in your terminal:
+Place all the `.desktop` files on your personal desktop, or create symlinks to the `.desktop` files. If you opt for the symlink route, simply replace `sandbox` with your username on your PC. Paste the following in your terminal:
 
 ```
 ln -s '/home/sandbox/src/SARndbox-2.8/Desktop/SARndbox.desktop' '/home/sandbox/Desktop/SARndbox.desktop'
